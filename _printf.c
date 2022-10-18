@@ -1,125 +1,49 @@
 #include "main.h"
 
 /**
- * check_buffer_overflow - if code over buffer the space
- * print everything then revert back to 0
- * @buffer: holds the string to print
- * @len: position in buffer
- * Return: lenght position
+ * _printf - replication of some of the features from C function printf()
+ * @format: character string of directives, flags, modifiers, & specifiers
+ * Description: This function uses the variable arguments functionality and is
+ * supposed to resemble printf().  Please review the README for more
+ * information on how it works.
+ * Return: number of characters printed
  */
-
-int check_buffer_overflow(char *buffer, int len)
-{
-	if (len > 1020)
-	{
-		write(1, buffer, len);
-		len = 0;
-	}
-	return(len); /*lenth position*/
-}
-
-/**_printf - custom version of printf
- * @format: intioal string with all identifiers
- * Return: string with identifies expanded
- */
-
 int _printf(const char *format, ...)
-	{
-	int len = 0, total_len = 0, i = 0, j = 0;
-	va_list list;
-	char *buffer, *str;
-	char* (*f)(va_list);
+{
+	va_list args_list;
+	inventory_t *inv;
+	void (*temp_func)(inventory_t *);
 
-	if (format == NULL)
+	if (!format)
 		return (-1);
+	va_start(args_list, format);
+	inv = build_inventory(&args_list, format);
 
-	buffer = create_buffer();
-	if (buffer == NULL)
-		return (-1);
-
-	va_start(list, format);
-
-	while (format[i] != '\0')
+	while (inv && format[inv->i] && !inv->error)
 	{
-		if (format[i] != '%') /* copy format into buffer until '%' */
+		inv->c0 = format[inv->i];
+		if (inv->c0 != '%')
+			write_buffer(inv);
+		else
 		{
-			len = check_buffer_overflow(buffer, len);
-			buffer[len++] = format[i++];
-			total_len++;
-		}
-		else /* if %, find function */
-		{
-			i++;
-			if (format[i] == '\0') /* handle single ending % */
+			parse_specifiers(inv);
+			temp_func = match_specifier(inv);
+			if (temp_func)
+				temp_func(inv);
+			else if (inv->c1)
 			{
-				va_end(list);
-				free(buffer);
-				return (-1);
-			}
-			if (format[i] == '%') /* handle double %'s */
-			{
-				len = check_buffer_overflow(buffer, len);
-				buffer[len++] = format[i];
-				total_len++;
+				if (inv->flag)
+					inv->flag = 0;
+				write_buffer(inv);
 			}
 			else
 			{
-				f = get_func(format[i]); /* grab function */
-				if (f == NULL)  /* handle fake id */
-				{
-					len = check_buffer_overflow(buffer, len);
-					buffer[len++] = '%'; total_len++;
-					buffer[len++] = format[i]; total_len++;
-				}
-				else /* return string, copy to buffer */
-				{
-					str = f(list);
-					if (str == NULL)
-					{
-						va_end(list);
-						free(buffer);
-						return (-1);
-					}
-					if (format[i] == 'c' && str[0] == '\0')
-					{
-						len = check_buffer_overflow(buffer, len);
-						buffer[len++] = '\0';
-						total_len++;
-					}
-					j = 0;
-					while (str[j] != '\0')
-					{
-						len = check_buffer_overflow(buffer, len);
-						buffer[len++] = str[j];
-						total_len++; j++;
-					}
-					free(str);
-				}
-			} i++;
+				if (inv->space)
+					inv->buffer[--(inv->buf_index)] = '\0';
+				inv->error = 1;
+			}
 		}
+		inv->i++;
 	}
-	
-	return (total_len);
-}
-
-/**
- * main - sample main program
- * Return: 0 on sucess
- */
-int main(void)
-{
-	_printf("\n\n\nMike testing One two This is what it can do\n\n\n");
-	sleep(1);
-	_printf("\nPrinting Strings, Characters, and Numbers...... %s %c%drld\n\n", "Hello", 'W', 0);
-	sleep(1);
-	_printf("Printing Reverse...... %r \n\n", "Hello");
-	sleep(1);
-	_printf("Printing Binary (base 2)...... %b \n\n", "Hello");
-	sleep(1);
-	_printf("Printing Octal (base 8)...... %o \n\n", "Hello");
-	sleep(1);
-	_printf("Printing Rot13 (encrypt)...... %R \n\n", "Hello");
-	sleep(1);
-	_printf("\n\n             = )                  \n\n\n");
-	return (0);
+	return (end_func(inv));
 }
