@@ -107,9 +107,9 @@ int _printf(const char *format, ...)
  */
 int main(void)
 {
-	_printf("\n\n\nHere's some examples of what you could do with this custom_printf function!\n\n\n");
+	_printf("\n\n\nHere are some stuff this custom printf can do\n\n\n");
 	sleep(1);
-	_printf("\nPrinting Strings, Characters, and Numbers...... %s %c%drld\n\n", "Hello", 'W', 0);
+	_printf("\nPrinting Strings, Characters, and Numbers...... %s %c%dworld\n\n", "Hello", 'W', 0);
 	sleep(1);
 	_printf("Printing Reverse...... %r \n\n", "Hello");
 	sleep(1);
