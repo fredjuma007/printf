@@ -30,5 +30,3 @@ char *rev_string(va_list list)
 
 	return (rev);
 }
-Footer
-
