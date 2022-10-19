@@ -1,25 +1,14 @@
 #include "main.h"
 
 /**
- * print_c - returns char as string
- * @list: char
- * Return: String verion of char
+ * printc - prints a char.
+ * @pa: format of char.
+ * @format: format
+ * Return: number char for printf.
  */
-char *print_c(va_list list)
+int printc(char *format, va_list pa)
 {
-	char *s;
-	char c;
-
-	c = va_arg(list, int);
-
-	if (c == 0)
-		c = '\0';
-
-	s = malloc(sizeof(char) * 2);
-	if (s == NULL)
-		return (NULL);
-	s[0] = c;
-	s[1] = '\0';
-
-	return (s);
+	(void)format;
+	_putchar(va_arg(pa, int));
+	return (1);
 }

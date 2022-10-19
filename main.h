@@ -1,38 +1,37 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdarg.h> /*va_list is fount here*/
-#include <stdlib.h> /*mallo, free*/
-#include <unistd.h> /* write the buffer*/
-#include <string.h>
-/* assisting functions */
-char* (*get_func(char i))(va_list);
-char *create_buffer(void);
-void write_buffer(char *buffer, int len, va_list list);
-char *_strcpy(char *dest, char *src);
-int _strlen(char *s);
-
-/* printf functions */
-int _printf(const char *format, ...);
-char *print_s(va_list list);
-char *print_c(va_list list);
-char *print_d(va_list list);
-char *itob(va_list list);
-char *rot13(va_list list);
-char *rev_string(va_list list);
-char *itoOctal(va_list list);
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 /**
- * struct types - struct
- * @id: identifier of type to print (e.g. c means char)
- * @func: ptr to functions that print according to identifier (e.g. print_c)
+ * struct structprint - structure containing
+ * @q: the location and method to translate data to characters.
+ * @u: print function for specific type.
+ *
+ * Return: int
  */
-
-typedef struct types
+typedef struct structprint
 {
-	char id;
-	char* (*func)(va_list);
-} print;
+	char *q;
+	int (*u)(char *format, va_list);
+} structype;
 
-
+/*Went with one list removed all the custom helper files. started fresh */
+int _putchar(char ch);
+int _puts(char *string);
+int printc(char *format, va_list);
+int printstr(char *format, va_list);
+int (*driver(char *format))(char *format, va_list);
+int _printf(char *format, ...);
+int printint(char *format, va_list pa);
+int integer(int number);
+int contadordigit(int number);
+int _abs(int number);
+int printpercent(char *format, va_list pa);
+int printhex(char *format, va_list);
+int printHEX(char *format, va_list);
+int printocta(char *format, va_list);
+int print_unsign(char *format, va_list);
 #endif
