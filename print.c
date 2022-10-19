@@ -1,13 +1,12 @@
 #include "main.h"
 
 /**
- * check_buffer_overflow - if code over buffer the space
- * print everything then revert back to 0
- * @buffer: holds the string to print
+ * check_buffer_overflow - if writing over buffer space,
+ * print everything then revert length back to 0 to write at buffer start
+ * @buffer: buffer holding string to print
  * @len: position in buffer
- * Return: lenght position
+ * Return: length position
  */
-
 int check_buffer_overflow(char *buffer, int len)
 {
 	if (len > 1020)
@@ -15,16 +14,16 @@ int check_buffer_overflow(char *buffer, int len)
 		write(1, buffer, len);
 		len = 0;
 	}
-	return(len); /*lenth position*/
+	return (len);
 }
 
-/**_printf - custom version of printf
- * @format: intioal string with all identifiers
- * Return: string with identifies expanded
+/**
+ * _printf - mini printf version
+ * @format: initial string with all identifiers
+ * Return: strings with identifiers expanded
  */
-
 int _printf(const char *format, ...)
-	{
+{
 	int len = 0, total_len = 0, i = 0, j = 0;
 	va_list list;
 	char *buffer, *str;
@@ -98,7 +97,7 @@ int _printf(const char *format, ...)
 			} i++;
 		}
 	}
-	
+	write_buffer(buffer, len, list);
 	return (total_len);
 }
 
@@ -108,9 +107,17 @@ int _printf(const char *format, ...)
  */
 int main(void)
 {
-	_printf("\n\n\nMike testing One two This is what it can do\n\n\n");
+	_printf("\n\n\nHere's some examples of what you could do with this custom_printf function!\n\n\n");
 	sleep(1);
 	_printf("\nPrinting Strings, Characters, and Numbers...... %s %c%drld\n\n", "Hello", 'W', 0);
+	sleep(1);
+	_printf("Printing Reverse...... %r \n\n", "Hello");
+	sleep(1);
+	_printf("Printing Binary (base 2)...... %b \n\n", "Hello");
+	sleep(1);
+	_printf("Printing Octal (base 8)...... %o \n\n", "Hello");
+	sleep(1);
+	_printf("Printing Rot13 (encrypt)...... %R \n\n", "Hello");
 	sleep(1);
 	_printf("\n\n             = )                  \n\n\n");
 	return (0);
