@@ -1,3 +1,5 @@
+#include "main.h"
+
 /**
  * _itos - makes an int a string
  * @div: multiple of 10
