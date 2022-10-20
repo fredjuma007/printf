@@ -2,6 +2,7 @@
 
 /**
  * _puts - prints a string
+ * trying to mimick the actual puts in C
  * new line, to stdout.
  * @string: input string
  * Return: count of string.

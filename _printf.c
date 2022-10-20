@@ -3,6 +3,7 @@
 /**
  * _printf - mimicks the actual pritf
  * @format: string that contains the format to print
+ * struct my_struct - short description
  * Return: number of characters written
  */
 int _printf(char *format, ...)
@@ -15,7 +16,7 @@ int _printf(char *format, ...)
 		return (-1);
 	q[2] = '\0';
 	va_start(pa, format);
-	_putchar(-1);
+	_putchar(-1); /*implimenting a custom putchar*/
 	while (format[0])
 	{
 		if (format[0] == '%')
